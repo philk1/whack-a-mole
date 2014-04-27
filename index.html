@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=500,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="img/touch-icon-iphone.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="img/touch-icon-ipad.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/touch-icon-iphone4.png" />
+    <title>Whack-a-Mole</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/custom.css" /> 
+    <script>
+      // Insert your JavaScript here (or externalize to .js file)
+      var count;
+      var score = 0;
+      var gameRunning = false;
+      var isHit = false;
+      function timeplus(){
+        if(gameRunning == true){
+          //do nothing
+          
+        }
+        else{
+        count = 30;
+        var x = setInterval(function(){
+          gameRunning = true;
+          if(count==0){
+            gameRunning = false;
+            clearInterval(x);
+            popDown();
+            document.getElementById("timer").innerHTML = "Game Over!";
+            score = 0;
+            document.getElementById("score").innerHTML = 0;
+          }
+          else{
+            document.getElementById("timer").innerHTML = count--; 
+            var y = setInterval(function(){ popUp(); clearInterval(y)}, 750);
+            popDown();
+          }
+        }, 1000);
+         
+        }
+      }
+      var currHole;
+      function popDown(){
+        document.getElementById(currHole).src = "img/down.png";
+      }
+
+      function popUp(){
+        if(gameRunning==true){
+          isHit=false;
+          hole = Math.floor((Math.random()*9)+1);
+          newHole = "hole" + hole + "pic";
+          document.getElementById(newHole).src = "img/up.png";
+          currHole = newHole;
+        }
+        
+      }
+      
+      function startGame(){
+        if(gameRunning==true){
+          var quit = confirm("Do you want to restart the game?");
+          if(quit){
+            count=30;timePlus();
+          }
+        }
+      timeplus();
+      }
+      
+      function checkIfHit(a){
+        if(gameRunning==true && isHit==false){
+          if(a=="http://www.csee.umbc.edu/~philk1/d18d91faa3ac7bf4/javascript/p1/img/up.png"){
+            score = score + 1; 
+            isHit=true;
+            document.getElementById("score").innerHTML = score;
+            return;
+          }
+        }
+        else if(gameRunning==true && isHit==true){
+          //do nothing
+        }
+
+        else{
+          alert("Start a game before you just start clicking holes");
+        }
+      }
+
+    </script>
+  </head>
+  <body>
+    
+    <div class="board">
+      
+      <h1>Whack-a-Mole</h1>
+      
+      <div class="row-fluid">
+	<div class="span6">
+	  Time Remaining:
+	  <!-- container for the time remaining - you may want to id -->
+	  <div class="well" id="timer">
+	    0
+	  </div>
+	</div>
+	<div class="span6">
+	  Score:
+	  <!-- container for the score - you may want to id -->
+	  <div class="well" id="score">
+	    0
+	  </div>
+	</div>
+      </div>
+      
+      
+      <div class="row-fluid board-row">
+        <!-- first row of images, you will need to add event handlers, id, etc... -->
+	<div class="span4" id="hole1">
+          <img src="img/down.png" id="hole1pic" onclick="checkIfHit(document.getElementById('hole1pic').src)" />
+	</div>
+	<div class="span4" id="hole2">
+          <img src="img/down.png" id="hole2pic" onclick="checkIfHit(document.getElementById('hole2pic').src)" />
+	</div>
+	<div class="span4" id="hole3">
+          <img src="img/down.png" id="hole3pic" onclick="checkIfHit(document.getElementById('hole3pic').src)" />
+	</div>
+      </div>
+      
+      <div class="row-fluid board-row">
+        <!-- second row, middle image shows how (during game play) 
+             a mole can be shown by swapping down.png with up.png -->
+	<div class="span4" id="hole4">
+          <img src="img/down.png" id="hole4pic" onclick="checkIfHit(document.getElementById('hole4pic').src)" />
+	</div>
+	<div class="span4" id="hole5">
+          <img src="img/down.png" id="hole5pic" onclick="checkIfHit(document.getElementById('hole5pic').src)" />
+	</div>
+	<div class="span4" id="hole6">
+          <img src="img/down.png" id="hole6pic" onclick="checkIfHit(document.getElementById('hole6pic').src)" />
+	</div>
+      </div>
+      
+      <div class="row-fluid board-row">
+	<div class="span4" id="hole7">
+          <img src="img/down.png" id="hole7pic" onclick="checkIfHit(document.getElementById('hole7pic').src)" />
+	</div>
+	<div class="span4" id="hole8">
+          <img src="img/down.png" id="hole8pic" onclick="checkIfHit(document.getElementById('hole8pic').src)" />
+	</div>
+	<div class="span4" id="hole9">
+          <img src="img/down.png" id="hole9pic" onclick="checkIfHit(document.getElementById('hole9pic').src)" />
+	</div>
+      </div>
+      
+      <div class="board-row">
+	<!-- need to bind event handler to restart the game -->
+	<input type="button" value="Start Game" onclick="startGame()" class="btn btn-primary btn-large"/>
+      </div>
+      
+    </div> <!-- end div.board -->
+
+  </body>
+</html>
